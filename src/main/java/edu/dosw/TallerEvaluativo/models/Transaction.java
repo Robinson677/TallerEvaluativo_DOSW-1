@@ -16,4 +16,14 @@ public class Transaction {
 	private String description;
 	private BigDecimal amount; 
 	private LocalDate date;
+
+    @Override
+    public String toString() {
+        return "Transaction{" +
+                "id='" + id + '\'' +
+                ", desc='" + description + '\'' +
+                ", amount=" + amount +
+                ", date=" + date +
+                '}';
+    }
 }
