@@ -46,9 +46,9 @@ public class BaseReportRecourse implements IReportRecourse {
     @Override
     public byte[] renderExcel() {
         StringBuilder sb = new StringBuilder();
-        sb.append("Reporte: ").append(report.getTitle() == null ? "" : report.getTitle()).append("\n");
-        sb.append("Autor: ").append(report.getAuthor() == null ? "" : report.getAuthor()).append("\n");
-        sb.append("Transacciones: ").append(report.getTransactions() == null ? 0 : report.getTransactions().size()).append("\n");
+        sb.append("Report: ").append(report.getTitle() == null ? "" : report.getTitle()).append("\n");
+        sb.append("Author: ").append(report.getAuthor() == null ? "" : report.getAuthor()).append("\n");
+        sb.append("Transactions: ").append(report.getTransactions() == null ? 0 : report.getTransactions().size()).append("\n");
         return sb.toString().getBytes(StandardCharsets.UTF_8);
     }
 }
