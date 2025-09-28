@@ -1,9 +1,13 @@
 package edu.dosw.TallerEvaluativo.services;
 
+import edu.dosw.TallerEvaluativo.models.ReportComponent;
 import edu.dosw.TallerEvaluativo.dtos.ReportDTO;
+import edu.dosw.TallerEvaluativo.dtos.ReportResponseDTO;
 import edu.dosw.TallerEvaluativo.models.Report;
 import edu.dosw.TallerEvaluativo.models.ReportMapper;
+import edu.dosw.TallerEvaluativo.models.Transaction;
 import edu.dosw.TallerEvaluativo.repositories.ReportRepository;
+import edu.dosw.TallerEvaluativo.repositories.TransactionRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.http.HttpStatus;
@@ -16,22 +20,62 @@ import java.util.UUID;
 public class ReportService {
 
     private final ReportRepository reportRepository;
+    private final TransactionRepository transactionRepository;
     private final ReportMapper reportMapper;
+    private final ReportDecoratorFactory decoratorFactory;
 
-    public ReportService(ReportRepository reportRepository, ReportMapper reportMapper) {
+    public ReportService(ReportRepository reportRepository,
+                                 TransactionRepository transactionRepository,
+                                 ReportMapper reportMapper,
+                                 ReportDecoratorFactory decoratorFactory) {
         this.reportRepository = reportRepository;
+        this.transactionRepository = transactionRepository;
         this.reportMapper = reportMapper;
+        this.decoratorFactory = decoratorFactory;
     }
 
     public ReportDTO createReport(ReportDTO dto) {
         Report report = reportMapper.toEntity(dto);
         report.setId(UUID.randomUUID().toString());
-        report.setDate(LocalDate.now()); 
+        report.setDate(LocalDate.now());
         report.setTransactions(List.of());
         Report saved = reportRepository.save(report);
         return reportMapper.toDTO(saved);
     }
 
+    // Nuevo método para crear reportes con decoradores
+    public ReportResponseDTO createDecoratedReport(ReportDTO request) {
+        // Crear reporte base
+        Report report = new Report();
+        report.setId(UUID.randomUUID().toString());
+        report.setTitle(request.getTitle());
+        report.setAuthor(request.getAuthor());
+        report.setContent(request.getContent());
+        report.setDate(LocalDate.now());
+
+        // Obtener todas las transacciones (o filtrar según necesidades)
+        List<Transaction> transactions = transactionRepository.findAll();
+        report.setTransactions(transactions);
+
+        // Guardar reporte
+        Report saved = reportRepository.save(report);
+
+        // Aplicar decoradores y generar respuesta
+        ReportComponent decoratedReport = decoratorFactory.createDecoratedReport(saved, request);
+        return decoratedReport.generate();
+    }
+
+    // Método para obtener reporte decorado por ID
+    public ReportResponseDTO getDecoratedReportById(String id, ReportDTO decoratorConfig) {
+        Report report = reportRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Reporte no encontrado"));
+
+        // Aplicar decoradores
+        ReportComponent decoratedReport = decoratorFactory.createDecoratedReport(report, decoratorConfig);
+        return decoratedReport.generate();
+    }
+
+    // Métodos existentes mantienen su funcionalidad
     public List<ReportDTO> getAllReports() {
         List<Report> reports = reportRepository.findAll();
         if (reports.isEmpty()) {
@@ -42,7 +86,7 @@ public class ReportService {
 
     public ReportDTO getReportById(String id) {
         Report report = reportRepository.findById(id)
-            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Reporte no encontrado"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Reporte no encontrado"));
         return reportMapper.toDTO(report);
     }
 
@@ -84,4 +128,3 @@ public class ReportService {
         reportRepository.deleteById(id);
     }
 }
-

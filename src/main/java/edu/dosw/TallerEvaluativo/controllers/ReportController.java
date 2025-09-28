@@ -1,17 +1,13 @@
 package edu.dosw.TallerEvaluativo.controllers;
 
-
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 
 import edu.dosw.TallerEvaluativo.dtos.ReportDTO;
+import edu.dosw.TallerEvaluativo.dtos.ReportResponseDTO;
+import edu.dosw.TallerEvaluativo.enums.DecoratorType;
 import edu.dosw.TallerEvaluativo.services.ReportService;
 
 import jakarta.validation.Valid;
@@ -29,6 +25,7 @@ public class ReportController {
         this.reportService = reportService;
     }
 
+    // Endpoints existentes
     @PostMapping
     public ReportDTO createReport(@Valid @RequestBody ReportDTO reportDTO) {
         return reportService.createReport(reportDTO);
@@ -63,5 +60,75 @@ public class ReportController {
     public void deleteReport(@PathVariable String id) {
         reportService.deleteReport(id);
     }
-}
 
+    // Nuevos endpoints para reportes decorados
+    @PostMapping("/decorated")
+    public ReportResponseDTO createDecoratedReport(@Valid @RequestBody ReportDTO request) {
+        return reportService.createDecoratedReport(request);
+    }
+
+    @PostMapping("/{id}/decorated")
+    public ReportResponseDTO getDecoratedReport(@PathVariable String id,
+                                                @RequestBody ReportDTO decoratorConfig) {
+        return reportService.getDecoratedReportById(id, decoratorConfig);
+    }
+
+    // Endpoint para descargar archivo exportado
+    @PostMapping("/{id}/export")
+    public ResponseEntity<byte[]> exportReport(@PathVariable String id,
+                                               @RequestBody ReportDTO exportConfig) {
+        ReportResponseDTO response = reportService.getDecoratedReportById(id, exportConfig);
+
+        if (response.getExportedFile() != null && response.getExportedFile().length > 0) {
+            HttpHeaders headers = new HttpHeaders();
+
+            if ("PDF".equals(response.getExportFormat())) {
+                headers.setContentType(MediaType.APPLICATION_PDF);
+                headers.setContentDispositionFormData("attachment",
+                        response.getTitle().replaceAll("\\s+", "_") + ".pdf");
+            } else if ("EXCEL".equals(response.getExportFormat())) {
+                headers.setContentType(MediaType.valueOf("application/vnd.ms-excel"));
+                headers.setContentDispositionFormData("attachment",
+                        response.getTitle().replaceAll("\\s+", "_") + ".csv");
+            }
+
+            return ResponseEntity.ok()
+                    .headers(headers)
+                    .body(response.getExportedFile());
+        }
+
+        return ResponseEntity.notFound().build();
+    }
+
+    // Endpoint para obtener solo los datos de gráficas
+    @GetMapping("/{id}/charts")
+    public ResponseEntity<String> getReportCharts(@PathVariable String id) {
+        ReportDTO chartRequest = new ReportDTO();
+        chartRequest.getDecorators().add(DecoratorType.CHARTS);
+
+        ReportResponseDTO response = reportService.getDecoratedReportById(id, chartRequest);
+
+        if (response.getHasCharts() && response.getChartData() != null) {
+            return ResponseEntity.ok()
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body(response.getChartData());
+        }
+
+        return ResponseEntity.notFound().build();
+    }
+
+    // Endpoint para obtener solo las estadísticas
+    @GetMapping("/{id}/statistics")
+    public ResponseEntity<Object> getReportStatistics(@PathVariable String id) {
+        ReportDTO statsRequest = new ReportDTO();
+        statsRequest.getDecorators().add(DecoratorType.STATISTICS);
+
+        ReportResponseDTO response = reportService.getDecoratedReportById(id, statsRequest);
+
+        if (response.getHasStatistics() && response.getStatistics() != null) {
+            return ResponseEntity.ok(response.getStatistics());
+        }
+
+        return ResponseEntity.notFound().build();
+    }
+}
