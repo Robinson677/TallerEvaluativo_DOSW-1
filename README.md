@@ -16,19 +16,35 @@ Taller evaluativo de sistema de reportes financieros
 
 ## Diagramas UML
 
+### *Diagrama de Componentes Especifico:*
+
+![alt text](docs/uml/DiagramaComponentesEspecificos.drawio.png)
+
+La arquitectura del sistema se organiza en diferentes componentes.  
+Los DTOs son los encargados de enviar las solicitudes hacia los controladores. Por ejemplo:
+
+- ReportResponseDTO y ReportDTO se comunican con el ReportController.
+- TransactionDTO se comunica con el TransactionController.
+
+A su vez, los controladores delegan la lógica de negocio a los servicios correspondientes:
+
+- ReportController interactúa con el ReportService.
+- TransactionController interactúa con el TransactionService.
+
+Los servicios utilizan mapeadores para transformar los datos entre los distintos DTOs y las entidades del dominio:
+
+- ReportService se apoya en el ReportMapper.
+- TransactionService se apoya en el TransactionMapper.
+
+Posteriormente, los servicios hacen uso de los repositorios ReportRepository y TransactionRepository para realizar operaciones de persistencia, ya sea consultas o almacenamiento de información en el backend.
+
+Finalmente, en el caso de los reportes, el ReportService se integra con la ReportDecoratorFactory, lo que permite extender dinámicamente las funcionalidades de los reportes antes de almacenarlos o presentarlos.
+
+
 ### *Diagrama de Clases:*
 
 ![alt text](docs/uml/diagramaClases.png)
 
-### *Diagrama de Componentes Especifico:*
-
-![alt text](docs/uml/DiagramaComponentesEspecificos.drawio.png)
-En la arquitectura planteada, los controladores actúan como punto de entrada del sistema, recibiendo las solicitudes del usuario en forma de DTOs ReportDTO, TransactionDTO y devolviendo las respuestas adecuadas ReportResponseDTO.
-Estos controladores delegan la lógica de negocio a los servicios, de manera que ReportController se comunica con ReportService y TransactionController con TransactionService. 
-A su vez, los servicios utilizan los mappers ReportMapper, TransactionMapper para transformar los datos entre DTOs y entidades del dominio antes de interactuar con la capa de persistencia. 
-Los servicios invocan a los repositorios ReportRepository, TransactionRepository para guardar o consultar información en el Backend, asegurando la persistencia de los reportes y transacciones. 
-Además, en el caso de los reportes, ReportService se apoya en la ReportDecoratorFactory para extender dinámicamente las funcionalidades del reporte antes de su almacenamiento o presentación. 
-De esta forma, cada capa cumple un rol específico y las dependencias fluyen de manera clara desde la entrada del sistema hasta la persistencia de datos.
 ---
 
 #### **Principios SOLID**
@@ -67,3 +83,5 @@ ReportDecoratorBuilder es un modulo de alto nivel por lo que no estamos dependie
 define el flujo usando IReportRecourse y implementando DecoratorFactory asi el builder trabaja con abstracciones no con clases concretas.
 
 El builder orquesta la composicion usando unicamente estas abstracciones y que decoradores aplicar y en que orden pero no como estan implementados
+
+---
