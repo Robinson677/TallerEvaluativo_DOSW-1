@@ -11,14 +11,13 @@ public interface ReportMapper {
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "date", ignore = true)
-    @Mapping(target = "transactions", ignore = true)  
+    @Mapping(target = "transactions", ignore = true)
     Report toEntity(ReportDTO dto);
 
     ReportDTO toDTO(Report entity);
 
-    @Mapping(target = "id", ignore = true) 
+    @Mapping(target = "id", ignore = true)
     @Mapping(target = "date", ignore = true)
-    @Mapping(target = "transactions", ignore = true) 
+    @Mapping(target = "transactions", ignore = true)
     void updateEntity(@MappingTarget Report entity, ReportDTO dto);
 }
-

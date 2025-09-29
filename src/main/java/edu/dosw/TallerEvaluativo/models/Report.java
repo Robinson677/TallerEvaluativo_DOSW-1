@@ -24,16 +24,4 @@ public class Report {
     private List<Transaction> transactions;
     private String content;
 
-    @Override
-    public String toString() {
-        return "Report{" +
-                "id='" + id + '\'' +
-                ", title='" + title + '\'' +
-                ", date=" + date +
-                ", author='" + author + '\'' +
-                ", transactions=" + transactions +
-                ", content='" + content + '\'' +
-                '}';
-    }
-
 }

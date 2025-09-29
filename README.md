@@ -85,3 +85,35 @@ define el flujo usando IReportRecourse y implementando DecoratorFactory asi el b
 El builder orquesta la composicion usando unicamente estas abstracciones y que decoradores aplicar y en que orden pero no como estan implementados
 
 ---
+=======
+
+## Prueba endpoints de trannsacciones
+
+- Prueba de crear una transacción. 
+
+![alt text](docs/videos/PruebaCreaciónTransacción-Swagger.mp4)
+
+- Prueba consultar una transacción por el monto dado.
+
+![alt text](docs/videos/PruebaConsultarTransacciónMonto-Swagger.mp4)
+
+- Prueba Consultar una transacción por su fecha.
+
+![alt text](docs/videos/PruebaConsultarTransacciónFecha-Swagger.mp4)
+
+- Prueba consultar todas las transacciones que existen.
+
+![alt text](docs/videos/PruebaConsultarTodasTransacciones-Swagger.mp4)
+
+- Prueba consultar transacciones por su id.
+
+![alt text](docs/videos/PruebaConsultarTransaccionesId-Swagger.mp4)
+
+- Prueba actualizar transacciones por id.
+
+![alt text](docs/videos/PruebaActulizarTransacción-Swagger.mp4)
+
+- Prueba para eliminar transacciones existentes.
+
+![alt text](docs/videos/PruebaEliminarTransacción-Swagger.mp4)
+
