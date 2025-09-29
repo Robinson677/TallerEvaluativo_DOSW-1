@@ -18,8 +18,17 @@ Taller evaluativo de sistema de reportes financieros
 
 ### *Diagrama de Clases:*
 
-![alt text](docs/imagenes/diagramaClases.png)
+![alt text](docs/uml/diagramaClases.png)
 
+### *Diagrama de Componentes Especifico:*
+
+![alt text](docs/uml/DiagramaComponentesEspecificos.drawio.png)
+En la arquitectura planteada, los controladores actúan como punto de entrada del sistema, recibiendo las solicitudes del usuario en forma de DTOs ReportDTO, TransactionDTO y devolviendo las respuestas adecuadas ReportResponseDTO.
+Estos controladores delegan la lógica de negocio a los servicios, de manera que ReportController se comunica con ReportService y TransactionController con TransactionService. 
+A su vez, los servicios utilizan los mappers ReportMapper, TransactionMapper para transformar los datos entre DTOs y entidades del dominio antes de interactuar con la capa de persistencia. 
+Los servicios invocan a los repositorios ReportRepository, TransactionRepository para guardar o consultar información en el Backend, asegurando la persistencia de los reportes y transacciones. 
+Además, en el caso de los reportes, ReportService se apoya en la ReportDecoratorFactory para extender dinámicamente las funcionalidades del reporte antes de su almacenamiento o presentación. 
+De esta forma, cada capa cumple un rol específico y las dependencias fluyen de manera clara desde la entrada del sistema hasta la persistencia de datos.
 ---
 
 #### **Principios SOLID**
