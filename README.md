@@ -43,7 +43,7 @@ Finalmente, en el caso de los reportes, el ReportService se integra con la Repor
 
 ### *Diagrama de Clases:*
 
-![alt text](docs/uml/diagramaClases.png)
+![alt text](docs/uml/DiagramaClases.png)
 
 ---
 
@@ -54,7 +54,7 @@ Finalmente, en el caso de los reportes, el ReportService se integra con la Repor
 
 Cada clase se encarga de un unica cosa y esto se ve reflejado en:
 
-ReportBuillder ya que se encarga de construir el reporte y con BaseReportRecourse generamos la representación de ese reporte.
+ReportBuillder ya que se encarga de construir el reporte y con BaseReportComponent generamos la representación de ese reporte.
 
 La Transaction se encarga de los movimientos de los datos del reporte.
 
@@ -65,7 +65,7 @@ Las clases que extienden de ReportDecorator se encargan de diferentes de reporte
 ###### *Open/Closed Principle:*
 
 
-Con la interfaz IReportRecourse y la clase abstracta ReportDecorator nos permiten crear nuevas subclases y que a su vez estas puedan
+Con la interfaz ReportComponent y la clase abstracta ReportDecorator nos permiten crear nuevas subclases y que a su vez estas puedan
 definir su propio comportamiento, gracias a esta abstracción, cada decorador puede sobreescribir únicamente lo que necesita y 
 asi podemos añadir funcionalidades de los gráficos, marcas de agua y resumenes. 
 
@@ -73,14 +73,14 @@ asi podemos añadir funcionalidades de los gráficos, marcas de agua y resumenes
 
 ###### *Interface Segregation Principle:*
 
-Se diseñaron interfaces concretas y con pocos metodos para establecer contratos para los recursos
-como IReportRecourse y DecoratorFactory.
+Se diseño una interfaz concreta y con pocos metodos para establecer contratos para los recursos con 
+ReportComponent  
 
 
 ###### *Dependency Inversion Principle*
 
-ReportDecoratorBuilder es un modulo de alto nivel por lo que no estamos dependiendo de los modulos de bajo nivel ya que
-define el flujo usando IReportRecourse y implementando DecoratorFactory asi el builder trabaja con abstracciones no con clases concretas.
+ReportDecorator es un modulo de alto nivel por lo que no estamos dependiendo de los modulos de bajo nivel ya que
+define el flujo usando IReportRecourse y implementando ReportComponent asi el builder trabaja con abstracciones no con clases concretas.
 
 El builder orquesta la composicion usando unicamente estas abstracciones y que decoradores aplicar y en que orden pero no como estan implementados
 
