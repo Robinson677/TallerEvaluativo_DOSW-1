@@ -117,3 +117,20 @@ El builder orquesta la composicion usando unicamente estas abstracciones y que d
 
 [alt text](docs/videos/PruebaEliminarTransacción-Swagger.mp4)
 
+
+## para reports:
+- GET/reports/{id}
+- PUT/reports/{id}
+- DELETE/reports/{id}
+[alt text](docs/videos/reports1.mkv)
+
+
+- GET/reports
+-POST/reports
+-POST/reports/{id}/export
+-POST reports/{id}/decorated
+-GET reports/{id}/statics
+-GET reports/{id}/charts
+-GET reports/by-date
+-GET reports/by-author
+[alt text](docs/videos/reports2.mkv)
