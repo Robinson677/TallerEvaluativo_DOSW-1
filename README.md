@@ -134,3 +134,11 @@ El builder orquesta la composicion usando unicamente estas abstracciones y que d
 -GET reports/by-date
 -GET reports/by-author
 [alt text](docs/videos/reports2.mkv)
+
+---
+### Cobertura
+**jacoco**
+![jacoco](docs/imagenes/jacoco.png)
+
+**sonarqube**
+![sonarqube](docs/imagenes/sonarqube.jpg)
