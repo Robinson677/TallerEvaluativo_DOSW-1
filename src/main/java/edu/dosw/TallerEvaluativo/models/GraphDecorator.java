@@ -43,7 +43,7 @@ public class GraphDecorator extends ReportDecorator {
                         item.put("amount", transaction.getAmount());
                         return item;
                     })
-                    .collect(Collectors.toList());
+                    .toList();
 
             Map<String, Long> pieData = transactions.stream()
                     .collect(Collectors.groupingBy(

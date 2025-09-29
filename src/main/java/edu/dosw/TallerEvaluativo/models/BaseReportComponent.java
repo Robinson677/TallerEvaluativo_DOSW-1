@@ -2,12 +2,9 @@ package edu.dosw.TallerEvaluativo.models;
 
 import edu.dosw.TallerEvaluativo.dtos.ReportResponseDTO;
 import edu.dosw.TallerEvaluativo.dtos.TransactionDTO;
-import edu.dosw.TallerEvaluativo.models.Report;
-import edu.dosw.TallerEvaluativo.models.TransactionMapper;
 import lombok.AllArgsConstructor;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @AllArgsConstructor
 public class BaseReportComponent implements ReportComponent {
@@ -27,7 +24,7 @@ public class BaseReportComponent implements ReportComponent {
         if (report.getTransactions() != null) {
             List<TransactionDTO> transactionDTOs = report.getTransactions().stream()
                     .map(transactionMapper::toDTO)
-                    .collect(Collectors.toList());
+                    .toList();
             response.setTransactions(transactionDTOs);
         }
 

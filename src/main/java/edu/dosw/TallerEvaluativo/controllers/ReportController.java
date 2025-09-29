@@ -25,7 +25,6 @@ public class ReportController {
         this.reportService = reportService;
     }
 
-    // Endpoints existentes
     @PostMapping
     public ReportDTO createReport(@Valid @RequestBody ReportDTO reportDTO) {
         return reportService.createReport(reportDTO);
@@ -61,7 +60,6 @@ public class ReportController {
         reportService.deleteReport(id);
     }
 
-    // Nuevos endpoints para reportes decorados
     @PostMapping("/decorated")
     public ReportResponseDTO createDecoratedReport(@Valid @RequestBody ReportDTO request) {
         return reportService.createDecoratedReport(request);
@@ -73,7 +71,6 @@ public class ReportController {
         return reportService.getDecoratedReportById(id, decoratorConfig);
     }
 
-    // Endpoint para descargar archivo exportado
     @PostMapping("/{id}/export")
     public ResponseEntity<byte[]> exportReport(@PathVariable String id,
                                                @RequestBody ReportDTO exportConfig) {
@@ -100,7 +97,6 @@ public class ReportController {
         return ResponseEntity.notFound().build();
     }
 
-    // Endpoint para obtener solo los datos de gráficas
     @GetMapping("/{id}/charts")
     public ResponseEntity<String> getReportCharts(@PathVariable String id) {
         ReportDTO chartRequest = new ReportDTO();
@@ -117,7 +113,6 @@ public class ReportController {
         return ResponseEntity.notFound().build();
     }
 
-    // Endpoint para obtener solo las estadísticas
     @GetMapping("/{id}/statistics")
     public ResponseEntity<Object> getReportStatistics(@PathVariable String id) {
         ReportDTO statsRequest = new ReportDTO();

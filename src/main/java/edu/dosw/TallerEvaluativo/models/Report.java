@@ -23,5 +23,4 @@ public class Report {
     private String author;
     private List<Transaction> transactions;
     private String content;
-
 }
