@@ -139,6 +139,7 @@ El builder orquesta la composicion usando unicamente estas abstracciones y que d
 ### Cobertura
 **jacoco**
 ![jacoco](docs/imagenes/jacoco.png)
+![jacoco](docs/imagenes/jacoco2.jpg)
 
 **sonarqube**
 ![sonarqube](docs/imagenes/sonarqube.jpg)
